@@ -149,7 +149,7 @@ export default Base.extend({
       controller.checkHeight();
 
       if (code !== 'error') {
-        document.cookie = `gv_msg_${code}_${controller.prop('id')}=1; expires=${collapsed ? 'Tue, 19 Jan 2038' : 'Thu, 01 Jan 1970'} 00:00:00 GMT; path=/`;
+        document.cookie = `gv_msg_${code}_${controller.prop("id")}=1; expires=${collapsed ? "Tue, 19 Jan 2038" : "Thu, 01 Jan 1970"} 00:00:00 GMT; path=/; SameSite=Strict`;
       }
     });
   },
