@@ -560,9 +560,27 @@ const Genoverse = Base.extend(
         }
       });
 
+      documentEvents[`touchstart${eventNamespace}`] = (e) => {
+        this.hideMessages();
+
+        // Do nothing if clicking on a button in selectorControls
+        if (
+          !(
+            e.currentTarget === this.selector[0] && e.target !== e.currentTarget
+          )
+        ) {
+          this.touchstart(e);
+        }
+
+        return false;
+      };
       documentEvents[`mouseup${this.eventNamespace}`] = this.mouseup.bind(this);
       documentEvents[`mousemove${this.eventNamespace}`] =
         this.mousemove.bind(this);
+      documentEvents[`touchend${this.eventNamespace}`] =
+        this.touchend.bind(this);
+      documentEvents[`touchmove${this.eventNamespace}`] =
+        this.touchmove.bind(this);
       documentEvents[`keydown${this.eventNamespace}`] = this.keydown.bind(this);
       documentEvents[`keyup${this.eventNamespace}`] = this.keyup.bind(this);
       documentEvents[`mousewheel${this.eventNamespace}`] = (e) => {
@@ -895,6 +913,20 @@ const Genoverse = Base.extend(
         }
       } else if (this.dragAction === "select") {
         this.moveSelector(e);
+      }
+    },
+
+    touchstart: function (e) {
+      this.startDragScroll(e);
+    },
+
+    touchend: function (e) {
+      this.stopDragScroll();
+    },
+
+    touchmove: function (e) {
+      if (this.dragging && !this.scrolling) {
+        this.move(e.pageX - this.dragOffset - this.left);
       }
     },
 
